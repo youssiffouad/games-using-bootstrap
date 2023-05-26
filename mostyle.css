@@ -1,0 +1,68 @@
+.navbar-light .navbar-toggler-icon {
+  width: 1.2em;
+  height: 1.2em;
+}
+.navbar-toggler {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3px;
+  border: 1px solid #0e53b9 !important;
+  position: relative;
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 0.1rem !important;
+}
+
+.navbar-collapse {
+  justify-content: flex-end;
+}
+
+.dropdown-menu[data-bs-popper] {
+  top: 100%;
+  left: -306%;
+  margin-top: 0.125rem;
+}
+
+.dropdown-item:hover {
+  color: var(--bs-light);
+  background-color: var(--bs-primary);
+}
+
+.nav-pills li:hover {
+  background-color: #330976;
+  cursor: pointer;
+}
+
+.row .col-3 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+  height: 100px;
+  width: 100px;
+}
+
+.row .col-3:hover {
+  transform: rotateY(-180deg);
+}
+.front,
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 6px 0px black;
+  backface-visibility: hidden;
+}
+.setbgfront {
+  background: url("logos/qslogo.png") center no-repeat;
+  background-size: cover;
+}
+
+.back {
+  background-color: var(--bs-light);
+  transform: rotateY(-180deg);
+}
