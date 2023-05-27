@@ -45,9 +45,25 @@
   height: 100px;
   width: 100px;
 }
-
 .row .col-3:hover {
+  cursor: pointer;
+}
+
+.rotate {
   transform: rotateY(-180deg);
+}
+
+.revrotate {
+  transform: rotateY(0deg);
+}
+.transdiv {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: transparent;
+  height: 100vh;
+  width: 100vw;
 }
 .front,
 .back {
