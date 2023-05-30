@@ -102,3 +102,10 @@
   border-radius: 7px;
   box-shadow: 0 0 20px black;
 }
+
+.failurecounter {
+  display: flex;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
+}

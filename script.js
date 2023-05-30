@@ -1,58 +1,14 @@
-generatechoice();
-let flipcounter = 0;
-let curr;
-let prev;
-let mydiv;
-
-//----------dynamic generation of one row inside container-----------------
-let mycontainer = document.body.querySelector(
-  ".container-sm.d-flex.flex-column.justify-content-center"
-);
-
-let noofcards;
-btnsubmit();
-
-//-----------------------------------------------------------------\
-//                                                                 \
-//--------------------------function corner--------------------    \
-//                                                                 \
-//-----------------------------------------------------------------\
-
-function generaterow(x, y) {
-  for (let i = 0; i < x; i++) {
-    let myrow = document.createElement("div");
-    myrow.classList.add(
-      "row",
-      "align-content-center",
-      "flex-fill",
-      "justify-content-center"
-    );
-    mycontainer.appendChild(myrow);
-    for (let j = 0; j < y; j++) {
-      appendcardtorow(myrow, y);
-    }
-  }
+main();
+function main() {
+  choicedivGenerate();
+  btnsubmit().then(() => {
+    createtransdiv();
+    hideChoice();
+    failurecounterCreatediv();
+  });
 }
 
-//-------------------dynamic generation of cards inside row----------------
-function appendcardtorow(r, no) {
-  let mycard = document.createElement("div");
-  mycard.classList.add("col-3", "m-1");
-  r.appendChild(mycard);
-  appendfrbk(mycard);
-}
-
-//--------appending front and back faces to cards--------------
-function appendfrbk(card) {
-  let front = document.createElement("div");
-  front.classList.add("front", "setbgfront");
-  let back = document.createElement("div");
-  back.classList.add("back");
-  card.append(front, back);
-}
-
-//----generate div of choosing difficulty----------
-function generatechoice() {
+function choicedivGenerate() {
   let choicediv = document.createElement("div");
   choicediv.classList.add("choicediv");
   console.log(choicediv.innerHTML);
@@ -62,133 +18,211 @@ function generatechoice() {
   console.log(parent);
   parent.appendChild(choicediv);
   let myform = document.querySelector("form");
+
   choicediv.appendChild(myform);
+  myform.classList.remove("d-none");
 }
-
-//------------------disappear div of choosing difficulty--------------
-function disppearchoice() {
-  let choicediv = document.querySelector(".choicediv");
-  choicediv.style.display = "none";
-}
-
-//-------------------sending user choice to js code------------------
 
 function btnsubmit() {
-  let btn = document.querySelector(".btn.btn-primary");
-  btn.addEventListener("click", selectradio);
-  console.log(btn);
+  return new Promise((resolve) => {
+    let btn = document.querySelector(".btn.btn-primary");
+    btn.addEventListener("click", () => {
+      selectradio()
+        .then((rdvalue) => decide(rdvalue))
+        .then(([x, y]) => boardGenerate([x, y]))
+        .then((cards) => appendBackofCards(cards))
+        .then((cards) => cardsEventListener(cards));
+      resolve();
+    });
+  });
 }
 
 function selectradio() {
-  console.log("i clicked the button and selected the radio");
-  let chosenvalue = document.querySelector(
-    'input[ name="flexRadioDefault"]:checked'
-  ).value;
-
-  noofcards = decide(chosenvalue);
-  //----------select all cards------------> must be performed after btn is clicked
-  let cards = document.querySelectorAll(".row .col-3 ");
-  let noofimgs = 4;
-  console.log(cards);
-
-  //1- creating array of indesxes of 12 photos-> must be performed after btn is clicked
-  let imgs = [];
-  let imgindex = 1;
-  console.log(noofcards);
-  for (let i = 0; i < noofcards; i += 2) {
-    if (imgindex > noofimgs) {
-      imgindex = 1;
-    }
-    imgs[i] = imgindex;
-    imgs[i + 1] = imgindex;
-    imgindex++;
-  }
-
-  //2-randomly distributing indexes (shuffling)
-
-  for (let i = imgs.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-
-    [imgs[i], imgs[j]] = [imgs[j], imgs[i]];
-  }
-
-  console.log(imgs.length);
-  //3-placing imgs in back faces and putting index of img as atttribute for cards
-  for (let i = 0; i < imgs.length; i++) {
-    cards[i].setAttribute("imgvalue", `${imgs[i]}`);
-
-    cards[i].children[1].style.cssText = `
-  background: url("logos/photo-0${imgs[i]}.jpg") center no-repeat;
-  background-size: cover;
-`;
-  }
-
-  //---------implementing logic of game---------------
-
-  console.log("i will ceate trans div");
-  createtransdiv();
-  console.log(noofcards);
-  console.log(cards);
-  for (let i = 0; i < noofcards; i++) {
-    cards[i].addEventListener("click", function () {
-      curr = this;
-      console.log(curr);
-      console.log(prev);
-
-      flipcounter++;
-
-      flipcountercheck();
-      prev = curr;
-    });
-  }
-  console.log(noofcards);
-  disppearchoice();
+  return new Promise((resolve) => {
+    console.log("i clicked the button and selected the radio");
+    let chosenvalue = document.querySelector(
+      'input[ name="flexRadioDefault"]:checked'
+    ).value;
+    console.log(`from select radio`);
+    console.log(chosenvalue);
+    resolve(chosenvalue);
+  });
 }
-
-//--------------we have to get value of radio btn only after clicking-------------
 
 function decide(radiovalue) {
-  let noofrows,
-    noofcols = 3;
+  return new Promise((resolve) => {
+    let noofrows,
+      noofcols = 3;
 
-  console.log(typeof radiovalue);
-  if (radiovalue === "1") {
-    noofrows = 2;
-  } else if (radiovalue === "2") {
-    noofrows = 4;
-  } else {
-    noofrows = 6;
-  }
-  //-------caliing of generation fns----------
+    console.log(typeof radiovalue);
+    if (radiovalue === "1") {
+      noofrows = 2;
+    } else if (radiovalue === "2") {
+      noofrows = 4;
+    } else {
+      noofrows = 6;
+    }
+    console.log("from decide");
+    console.log([noofrows, noofcols]);
 
-  generaterow(noofrows, noofcols);
+    resolve([noofrows, noofcols]);
+  });
+}
+function boardGenerate([nr, nc]) {
+  return new Promise((resolve) => {
+    let cards = [];
+    for (let i = 0; i < nr; i++) {
+      let myrow = document.createElement("div");
+      myrow.classList.add(
+        "row",
+        "align-content-center",
+        "flex-fill",
+        "justify-content-center"
+      );
+      let mycontainer = document.body.querySelector(
+        ".container-sm.d-flex.flex-column.justify-content-center"
+      );
 
-  return noofrows * noofcols;
+      mycontainer.appendChild(myrow);
+      for (let j = 0; j < nc; j++) {
+        cards.push(appendcardtorow(myrow, nc));
+      }
+    }
+    console.log("from board generator");
+    console.log(cards);
+    resolve(cards);
+  });
+}
+function appendcardtorow(r, no) {
+  let mycard = document.createElement("div");
+  mycard.classList.add("col-3", "m-1");
+  r.appendChild(mycard);
+  appendfrbk(mycard);
+  return mycard;
+}
+function appendfrbk(card) {
+  let front = document.createElement("div");
+  front.classList.add("front", "setbgfront");
+  let back = document.createElement("div");
+  back.classList.add("back");
+  card.append(front, back);
 }
 
-//-------------randomly distibute 4 imgs across back face------------------
-
-function flipcountercheck() {
-  if (flipcounter % 2 == 0) {
-    evencheck();
-  } else {
-    oddcheck();
-  }
+function createtransdiv() {
+  let mydiv = document.createElement("div");
+  mydiv.classList.add("transdiv");
+  document.body.appendChild(mydiv);
 }
 
-function evencheck() {
-  disableclick();
+function cardsEventListener(arr) {
+  let flipCounter = {
+      value: 0,
+    },
+    failurecounter = {
+      value: 0,
+    };
+  let prevcard; // define prevcard as a local variable
+  arr.forEach((element) => {
+    element.addEventListener("click", () => {
+      // call flipdecide and pass the current event, flipCounter, and prevcard
+      prevcard = flipdecide(event, flipCounter, failurecounter, prevcard);
+      console.log(`fail counter=${failurecounter.value}`);
+      updateFailures(failurecounter.value);
+    });
+  });
+}
+
+function flipdecide(event, fc, failc, prevcard) {
+  fc.value++; // increment the flipCounter value
+  let currcard = event.target.parentElement; // get the current card element
+  if (fc.value % 2 == 0) {
+    // if the flipCounter is even, call evenchoice with the current and previous cards
+    evenchoice(currcard, prevcard, failc);
+  } else {
+    // if the flipCounter is odd, call oddchoice with the current card and update prevcard
+    prevcard = oddchoice(currcard);
+  }
+  return prevcard; // return the updated prevcard value
+}
+
+function oddchoice(curr) {
+  rotate(curr); // rotate the current card
+  return curr; // return the updated current card as the new prevcard
+}
+
+function evenchoice(curr, prev, miss) {
+  disableclick(); // disable clicking onthe cards
+
   if (curr.getAttribute("imgvalue") === prev.getAttribute("imgvalue")) {
+    // if the current and previous cards have the same image value, rotate the current card
     rotate(curr);
     console.log("iam even equal");
+    console.log(curr);
+    console.log(prev);
   } else {
+    // if the current and previous cards have different image values, reverse rotate both cards
     console.log("iam even notequal");
     revrotate(curr);
     revrotate(prev);
+    miss.value++;
   }
   setTimeout(() => {
     enableclick();
-  }, 1000);
+  }, 500);
+}
+
+function disableclick() {
+  let mydiv = document.querySelector(".transdiv");
+  mydiv.classList.add("d-block");
+}
+
+function appendBackofCards(cardarr) {
+  return new Promise((resolve) => {
+    let noofcards = cardarr.length;
+    createindxOfBack(noofcards)
+      .then((indarr) => shuffleindxes(indarr))
+      .then((indarr) => setindxAttribute(indarr, cardarr));
+    resolve(cardarr);
+  });
+}
+
+function createindxOfBack(nc) {
+  return new Promise((resolve) => {
+    let imgs = [];
+    let imgindex = 1;
+
+    for (let i = 0; i < nc; i += 2) {
+      if (imgindex > 4) {
+        imgindex = 1;
+      }
+      imgs[i] = imgindex;
+      imgs[i + 1] = imgindex;
+      imgindex++;
+    }
+    resolve(imgs);
+  });
+}
+
+function shuffleindxes(imgs) {
+  return new Promise((resolve) => {
+    for (let i = imgs.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+
+      [imgs[i], imgs[j]] = [imgs[j], imgs[i]];
+    }
+    resolve(imgs);
+  });
+}
+
+function setindxAttribute(indexarr, cards) {
+  for (let i = 0; i < indexarr.length; i++) {
+    cards[i].setAttribute("imgvalue", `${indexarr[i]}`);
+
+    cards[i].children[1].style.cssText = `
+      background: url("logos/photo-0${indexarr[i]}.jpg") center no-repeat;
+      background-size: cover;
+    `;
+  }
 }
 function rotate(e) {
   e.classList.add("rotate");
@@ -199,25 +233,33 @@ function revrotate(e) {
   setTimeout(() => {
     console.log("i am herr");
     e.classList.remove("rotate");
-    enableclick();
   }, 500);
 }
-
-function oddcheck() {
-  console.log("iam odd");
-  rotate(curr);
-}
-
-function createtransdiv() {
-  mydiv = document.createElement("div");
-  mydiv.classList.add("transdiv");
-  document.body.appendChild(mydiv);
-}
-
-function disableclick() {
-  mydiv.style.display = "block";
-}
-
 function enableclick() {
-  mydiv.style.display = "none";
+  let mydiv = document.querySelector(".transdiv");
+  console.log("i enabled");
+  mydiv.classList.remove("d-block");
+}
+function hideChoice() {
+  let choicediv = document.querySelector(".choicediv");
+  choicediv.classList.add("d-none");
+}
+
+function failurecounterCreatediv() {
+  let mynav = document.querySelector(".navbar.navbar-expand-sm");
+  let refernce = document.querySelector(".collapse.navbar-collapse");
+  let failurecont = document.createElement("div");
+  failurecont.classList.add(
+    "failurecounter",
+    "text-light",
+    "mo-gradient",
+    "text-lead"
+  );
+  failurecont.innerText = "no of fails=  0";
+  mynav.insertBefore(failurecont, refernce);
+}
+
+function updateFailures(x) {
+  let failurecont = document.querySelector(".failurecounter");
+  failurecont.innerText = `no of fails=  ${x}`;
 }
