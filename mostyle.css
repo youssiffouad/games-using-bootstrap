@@ -109,3 +109,16 @@
   justify-content: center;
   align-items: center;
 }
+
+.windiv {
+  background: linear-gradient(45deg, #ff00fa, #91c144);
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 0 0 black;
+  position: relative;
+  top: -50%;
+  width: 80%;
+}

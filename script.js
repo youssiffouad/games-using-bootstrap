@@ -118,6 +118,9 @@ function cardsEventListener(arr) {
   let flipCounter = {
       value: 0,
     },
+    wincounter = {
+      value: 0,
+    },
     failurecounter = {
       value: 0,
     };
@@ -125,19 +128,26 @@ function cardsEventListener(arr) {
   arr.forEach((element) => {
     element.addEventListener("click", () => {
       // call flipdecide and pass the current event, flipCounter, and prevcard
-      prevcard = flipdecide(event, flipCounter, failurecounter, prevcard);
+      prevcard = flipdecide(
+        event,
+        flipCounter,
+        failurecounter,
+        wincounter,
+        prevcard
+      );
       console.log(`fail counter=${failurecounter.value}`);
       updateFailures(failurecounter.value);
+      WinCounterCheck(wincounter.value, arr.length);
     });
   });
 }
 
-function flipdecide(event, fc, failc, prevcard) {
+function flipdecide(event, fc, failc, winc, prevcard) {
   fc.value++; // increment the flipCounter value
   let currcard = event.target.parentElement; // get the current card element
   if (fc.value % 2 == 0) {
     // if the flipCounter is even, call evenchoice with the current and previous cards
-    evenchoice(currcard, prevcard, failc);
+    evenchoice(currcard, prevcard, failc, winc);
   } else {
     // if the flipCounter is odd, call oddchoice with the current card and update prevcard
     prevcard = oddchoice(currcard);
@@ -150,7 +160,7 @@ function oddchoice(curr) {
   return curr; // return the updated current card as the new prevcard
 }
 
-function evenchoice(curr, prev, miss) {
+function evenchoice(curr, prev, miss, win) {
   disableclick(); // disable clicking onthe cards
 
   if (curr.getAttribute("imgvalue") === prev.getAttribute("imgvalue")) {
@@ -159,6 +169,8 @@ function evenchoice(curr, prev, miss) {
     console.log("iam even equal");
     console.log(curr);
     console.log(prev);
+    win.value += 2;
+    console.log(win.value);
   } else {
     // if the current and previous cards have different image values, reverse rotate both cards
     console.log("iam even notequal");
@@ -262,4 +274,29 @@ function failurecounterCreatediv() {
 function updateFailures(x) {
   let failurecont = document.querySelector(".failurecounter");
   failurecont.innerText = `no of fails=  ${x}`;
+}
+
+function WinCounterCheck(x, len) {
+  if (x == len) {
+    dimBoard();
+    Displaywinmsg();
+  }
+}
+
+function dimBoard() {
+  let boardrows = document.querySelectorAll(
+    ".row.align-content-center.flex-fill.justify-content-center"
+  );
+  boardrows.forEach((element) => {
+    element.style.transition = "opacity 0.5s ease-in-out"; // transition property added
+    element.style.opacity = "0.1"; // changed opacity value to decimal form
+  });
+}
+
+function Displaywinmsg() {
+  let windiv = document.createElement("div");
+  windiv.classList.add("windiv", "text-light", "lead", "container-sm");
+  windiv.innerText = "congrats u won";
+  let parent = document.querySelector(".container-fluid.d-flex.flex-column");
+  parent.appendChild(windiv);
 }
