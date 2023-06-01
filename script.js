@@ -297,6 +297,17 @@ function Displaywinmsg() {
   let windiv = document.createElement("div");
   windiv.classList.add("windiv", "text-light", "lead", "container-sm");
   windiv.innerText = "congrats u won";
+  windiv.appendChild(playAgain());
   let parent = document.querySelector(".container-fluid.d-flex.flex-column");
   parent.appendChild(windiv);
+  setTimeout(function () {
+    windiv.classList.add("display");
+  }, 100);
+}
+
+function playAgain() {
+  let btn = document.createElement("button");
+  btn.classList.add("btn", "btn-lg", "bg-primary", "text-light", "my-2");
+  btn.innerText = "Play Gain";
+  return btn;
 }
