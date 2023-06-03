@@ -137,7 +137,7 @@ function cardsEventListener(arr) {
       );
       console.log(`fail counter=${failurecounter.value}`);
       updateFailures(failurecounter.value);
-      WinCounterCheck(wincounter.value, arr.length);
+      WinCounterCheck(wincounter, failurecounter, arr.length);
     });
   });
 }
@@ -178,6 +178,7 @@ function evenchoice(curr, prev, miss, win) {
     revrotate(prev);
     miss.value++;
   }
+
   setTimeout(() => {
     enableclick();
   }, 500);
@@ -276,10 +277,12 @@ function updateFailures(x) {
   failurecont.innerText = `no of fails=  ${x}`;
 }
 
-function WinCounterCheck(x, len) {
-  if (x == len) {
+function WinCounterCheck(wc, fc, len) {
+  if (wc.value == len) {
     dimBoard();
     Displaywinmsg();
+    wc.value = 0;
+    fc.value = 0;
   }
 }
 
@@ -288,26 +291,54 @@ function dimBoard() {
     ".row.align-content-center.flex-fill.justify-content-center"
   );
   boardrows.forEach((element) => {
-    element.style.transition = "opacity 0.5s ease-in-out"; // transition property added
+    element.style.transition = "opacity 1s ease-in-out"; // transition property added
     element.style.opacity = "0.1"; // changed opacity value to decimal form
   });
 }
 
 function Displaywinmsg() {
-  let windiv = document.createElement("div");
-  windiv.classList.add("windiv", "text-light", "lead", "container-sm");
-  windiv.innerText = "congrats u won";
-  windiv.appendChild(playAgain());
-  let parent = document.querySelector(".container-fluid.d-flex.flex-column");
-  parent.appendChild(windiv);
-  setTimeout(function () {
-    windiv.classList.add("display");
-  }, 100);
+  setTimeout(() => {
+    disableclick();
+  }, 500);
+
+  let windiv = document.querySelector(".windiv");
+
+  windiv.classList.remove("hide");
+  windiv.classList.add("display");
+  playAgain();
 }
 
 function playAgain() {
-  let btn = document.createElement("button");
-  btn.classList.add("btn", "btn-lg", "bg-primary", "text-light", "my-2");
-  btn.innerText = "Play Gain";
-  return btn;
+  let btn = document.querySelector(".btn.btn-lg.bg-primary.text-light.my-2");
+
+  btn.addEventListener("click", Revertall);
+}
+
+function Revertall() {
+  Hidewinmsg();
+  viewBoard();
+  enableclick();
+  let revcards = document.querySelectorAll(".col-3.m-1.rotate");
+  revcards.forEach((element, index) => {
+    setTimeout(() => {
+      element.classList.remove("rotate");
+    }, (index + 1) * 100);
+  });
+}
+
+function Hidewinmsg() {
+  console.log("a7a");
+  let windiv = document.querySelector(".windiv.text-light.lead.container-sm");
+  windiv.classList.remove("display");
+  windiv.classList.add("hide");
+}
+
+function viewBoard() {
+  let boardrows = document.querySelectorAll(
+    ".row.align-content-center.flex-fill.justify-content-center"
+  );
+  boardrows.forEach((element) => {
+    element.style.transition = "opacity 1s ease-in-out"; // transition property added
+    element.style.opacity = "1"; // changed opacity value to decimal form
+  });
 }

@@ -86,9 +86,10 @@
 .choicediv {
   position: absolute;
   top: 6%;
+  top: 7%;
   left: 0%;
+  height: 93vh;
   width: 100%;
-  height: 94vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -120,6 +121,21 @@
   align-items: center;
   text-shadow: 0 0 black;
   position: relative;
-  top: -50%;
+  top: -65%;
   width: 80%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  z-index: 60;
+}
+
+.windiv.display {
+  opacity: 1;
+  transform: translateY(16vh);
+  z-index: 6;
+}
+
+.windiv.hide {
+  opacity: 0;
+  transform: translateY(-16vh);
+  z-index: 0;
 }
