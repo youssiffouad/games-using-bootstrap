@@ -120,22 +120,18 @@
   justify-content: space-between;
   align-items: center;
   text-shadow: 0 0 black;
-  position: relative;
-  /* top: -10%; */
+  position: absolute;
+  top: 40%;
   width: 80%;
-  /* opacity: 0; */
+
   transition: opacity 1s ease-in-out, transform 1s ease-in-out,
     display 1s ease-in-out;
   z-index: 60;
 }
 
-.windiv.display {
-  opacity: 1;
-  transform: translateY(61vh);
-  z-index: 6;
+.windiv.hide1 {
+  display: none;
 }
-
-.windiv.hide {
-  /* display: none; */
+.windiv.hide2 {
   transform: translateY(-100vh);
 }

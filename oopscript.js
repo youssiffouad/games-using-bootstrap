@@ -408,13 +408,16 @@ class WinClass {
   DisplayWindiv() {
     let windiv = document.querySelector(".windiv");
 
-    windiv.classList.remove("hide");
-    // windiv.classList.add("display");
+    windiv.classList.remove("hide1");
+    setTimeout(function () {
+      windiv.classList.remove("hide2");
+    }, 1);
+
     return windiv;
   }
   HideWinDiv() {
     console.log("ay kalam");
-    this.winhtml.classList.add("hide");
+    this.winhtml.classList.add("hide1", "hide2");
     this.winhtml.classList.remove("display");
   }
 }
