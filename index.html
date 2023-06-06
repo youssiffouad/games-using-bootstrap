@@ -16,6 +16,9 @@
     <div class="container-fluid d-flex flex-column vh-100 bg-primary">
       <div class="navbar navbar-expand-sm navbar-light">
         <h2 class="navbar-brand text-light">Gamehub</h2>
+        <div class="failurecounter text-light mo-gradient d-none text-lead">
+          no of fails=
+        </div>
         <div class="collapse navbar-collapse">
           <ul class="nav nav-pills">
             <li class="text-light nav-link">item</li>
@@ -38,62 +41,78 @@
         </div>
       </div>
 
-      <!-- display grid -->
+      <!-- display level choice or gameboard or windiv-->
       <div
         class="container-sm d-flex flex-column justify-content-center vh-100 bg-secondary"
-      ></div>
-      <div class="windiv text-light lead container-sm hide">
-        congrats u won
-        <button class="btn btn-lg bg-primary text-light my-2">Play Gain</button>
-      </div>
-      <form class="d-none p-3 mo-gradient d-flex flex-column">
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label lead text-light"
-            >Choose difficulty level</label
-          >
-          <div class="form-check text-light">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="flexRadioDefault"
-              value="1"
-              id="flexRadioDefault1"
-            />
-            <label class="form-check-label" for="flexRadioDefault1">
-              easy
-            </label>
-          </div>
-          <div class="form-check text-light">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="flexRadioDefault"
-              value="2"
-              id="flexRadioDefault2"
-            />
-            <label class="form-check-label" for="flexRadioDefault2">
-              medium
-            </label>
-          </div>
-          <div class="form-check text-light">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="flexRadioDefault"
-              value="3"
-              id="flexRadioDefault3"
-            />
-            <label class="form-check-label" for="flexRadioDefault3">
-              hard
-            </label>
-          </div>
+      >
+        <!-- 1- display choice div -->
+        <div class="choicediv">
+          <form class="p-3 mo-gradient d-flex flex-column">
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label lead text-light"
+                >Choose difficulty level</label
+              >
+              <div class="form-check text-light">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  value="1"
+                  id="flexRadioDefault1"
+                />
+                <label class="form-check-label" for="flexRadioDefault1">
+                  easy
+                </label>
+              </div>
+              <div class="form-check text-light">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  value="2"
+                  id="flexRadioDefault2"
+                />
+                <label class="form-check-label" for="flexRadioDefault2">
+                  medium
+                </label>
+              </div>
+              <div class="form-check text-light">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  value="3"
+                  id="flexRadioDefault3"
+                />
+                <label class="form-check-label" for="flexRadioDefault3">
+                  hard
+                </label>
+              </div>
+            </div>
+            <button class="btn btn-primary border-0" type="button">ok</button>
+          </form>
         </div>
-        <button class="btn btn-primary border-0" type="button">ok</button>
-      </form>
+
+        <!-------------2- display gameboard -------------->
+        <div
+          class="container-sm d-flex flex-column justify-content-center min-vh-50 bg-secondary gameboard"
+        ></div>
+
+        <!-- 3- display windiv -->
+        <div class="windiv text-light lead container-sm hide">
+          congrats u won
+          <button class="btn btn-lg bg-primary text-light my-2">
+            Play again same level
+          </button>
+          <button class="btn btn-lg bg-primary text-light my-2">
+            Play again Select level
+          </button>
+        </div>
+      </div>
     </div>
     <script src="bootstrap-5.0.2-dist/js/all.min.js"></script>
     <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js.map"></script>
-    <script src="script.js"></script>
+    <script src="oopscript.js"></script>
   </body>
 </html>
